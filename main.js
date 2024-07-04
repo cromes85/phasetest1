@@ -59,12 +59,13 @@ function truncate(value) {
 }
 
 async function performOcr(image) {
-  const result = await Tesseract.recognize(image, "eng+fra", {
+  const result = await Tesseract.recognize(image, "eng", {
     tessedit_char_whitelist:
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.:;'\"()!? ",
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.:;'\"()!? /",
   });
   const detectedLang = detectLanguage(result.data.text);
-  return { text: result.data.text, lang: detectedLang };
+  const cleanedText = result.data.text.replace(/\n/g, " ").trim();
+  return { text: cleanedText, lang: detectedLang };
 }
 
 function detectLanguage(text) {
