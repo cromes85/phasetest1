@@ -23,21 +23,8 @@
             gap: 20px;
         }
 
-        #found-images {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .found-image {
-            max-width: 50px;
-            max-height: 50px;
-            border: 2px solid blue;
-            padding: 2px;
-        }
-
         #image {
-            max-width: 50%;
+            max-width: 100%;
             margin: 20px 0;
         }
 
@@ -70,9 +57,6 @@
     <h1>Pokémon Card OCR</h1>
     <input type="file" id="file-input" accept="image/*" capture="environment">
     <div id="container">
-        <div id="found-images">
-            <!-- Placeholders for found images -->
-        </div>
         <img id="image" src="" alt="Selected Image">
         <div id="text-container">
             <textarea id="detected-language" readonly></textarea>

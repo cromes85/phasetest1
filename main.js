@@ -20,29 +20,8 @@ document
       } else {
         saveExtractedText(file.name, correctedText);
       }
-
-      // Simulate found images for demonstration purposes
-      const foundImages = [
-        "path/to/your/image1.png", // Remplacez par les URLs valides des images
-        "path/to/your/image2.png", // Remplacez par les URLs valides des images
-        "path/to/your/image3.png", // Remplacez par les URLs valides des images
-        "path/to/your/image4.png", // Remplacez par les URLs valides des images
-      ];
-      displayFoundImages(foundImages);
     }
   });
-
-function displayFoundImages(images) {
-  const container = document.getElementById("found-images");
-  container.innerHTML = ""; // Clear previous images
-  images.forEach((src, index) => {
-    const img = document.createElement("img");
-    img.src = src;
-    img.alt = `Found image ${index + 1}`;
-    img.className = "found-image";
-    container.appendChild(img);
-  });
-}
 
 async function preprocessImage(file) {
   const image = await createImageBitmap(file);
