@@ -62,6 +62,7 @@ async function performOcr(image) {
   const result = await Tesseract.recognize(image, "eng", {
     tessedit_char_whitelist:
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.:;'\"()!? /",
+    tessedit_pageseg_mode: Tesseract.PSM.SINGLE_BLOCK,
   });
   const detectedLang = detectLanguage(result.data.text);
   const cleanedText = result.data.text.replace(/\n/g, " ").trim();
@@ -93,7 +94,7 @@ function resizeLanguageBox(text) {
 }
 
 function containsCode(text) {
-  const regex = /\b\d{3}\/\d{3}\b/;
+  const regex = /\b\d{1,3}\/\d{1,3}\b/;
   return regex.test(text);
 }
 
@@ -125,6 +126,7 @@ function autoCorrectText(text) {
     "oy =": "",
     llus: "Illus.",
     Ninenda: "Nintendo",
+    SRBI1O: "18/110",
     // Add more corrections as needed
   };
 
