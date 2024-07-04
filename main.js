@@ -10,7 +10,7 @@ document
       const { text: extractedText, lang: detectedLang } = await performOcr(
         processedImage
       );
-      const correctedText = autoCorrectText(extractedText);
+      const correctedText = await autoCorrectText(extractedText);
       document.getElementById("extracted-text").value = correctedText;
       document.getElementById("detected-language").value = detectedLang;
       resizeLanguageBox(detectedLang);
@@ -116,7 +116,7 @@ function saveCorrection(imageName, correctText) {
   localStorage.setItem(imageName, correctText);
 }
 
-function autoCorrectText(text) {
+async function autoCorrectText(text) {
   let correctedText = text;
   const corrections = {
     "6n": "on",
@@ -125,11 +125,6 @@ function autoCorrectText(text) {
     "oy =": "",
     llus: "Illus.",
     Ninenda: "Nintendo",
-    SRBI1O: "18/110",
-    "8/1 22": "81/122",
-    "52/ 100": "52/100",
-    "44/ 122": "44/122",
-    // Add more corrections as needed
   };
 
   for (const [wrong, right] of Object.entries(corrections)) {
@@ -137,7 +132,29 @@ function autoCorrectText(text) {
     correctedText = correctedText.replace(regex, right);
   }
 
-  return correctedText;
+  const validatedText = await validateCardCode(correctedText);
+  return validatedText;
+}
+
+async function validateCardCode(text) {
+  const regex = /\b\d{1,3}\/\d{1,3}\b/;
+  const matches = text.match(regex);
+  if (matches) {
+    const code = matches[0];
+    const [number, total] = code.split("/");
+    const response = await fetch(`https://tcgdex.dev/fr/rest/set-card`);
+    const data = await response.json();
+    const validCodes = data.map((card) => card.number + "/" + card.total);
+    if (!validCodes.includes(code)) {
+      const correctedCode = validCodes.find((validCode) =>
+        validCode.startsWith(number + "/")
+      );
+      if (correctedCode) {
+        text = text.replace(code, correctedCode);
+      }
+    }
+  }
+  return text;
 }
 
 document.getElementById("save-correction").addEventListener("click", () => {
