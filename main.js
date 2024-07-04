@@ -9,6 +9,7 @@ document.getElementById("file-input").addEventListener("change", async (event) =
     const correctedText = autoCorrectText(extractedText);
     document.getElementById("extracted-text").value = correctedText;
     document.getElementById("detected-language").value = detectedLang;
+    resizeLanguageBox(detectedLang);
 
     if (!containsCode(correctedText)) {
       showCorrectionDialog(file, correctedText);
@@ -78,6 +79,11 @@ function detectLanguage(text) {
   });
 
   return frenchCount > englishCount ? "French" : "English";
+}
+
+function resizeLanguageBox(text) {
+  const languageBox = document.getElementById("detected-language");
+  languageBox.style.width = `${text.length + 2}ch`;
 }
 
 function containsCode(text) {

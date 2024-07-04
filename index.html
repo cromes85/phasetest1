@@ -1,43 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon Card OCR</title>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.3/dist/tesseract.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        #image {
-            max-width: 100%;
-            margin: 20px 0;
-        }
-
-        #extracted-text,
-        #detected-language {
-            width: 100%;
-            max-width: 600px;
-            height: 150px;
-            margin-bottom: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Card OCR</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.3/dist/tesseract.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    #container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    #image {
+      max-width: 100%;
+      margin: 20px 0;
+    }
+    #text-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    #detected-language {
+      width: auto;
+      height: auto;
+      padding: 5px;
+      margin-bottom: 20px;
+      resize: none;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    #extracted-text {
+      width: 100%;
+      max-width: 600px;
+      height: 150px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
-
 <body>
-    <h1>Pokémon Card OCR</h1>
-    <input type="file" id="file-input" accept="image/*" capture="environment">
+  <h1>Pokémon Card OCR</h1>
+  <input type="file" id="file-input" accept="image/*" capture="environment">
+  <div id="container">
     <img id="image" src="" alt="Selected Image">
-    <textarea id="detected-language" placeholder="Detected language will appear here..." readonly></textarea>
-    <textarea id="extracted-text" placeholder="Extracted text will appear here..."></textarea>
-    <button id="save-correction">Save Correction</button>
-    <script src="index.js"></script>
+    <div id="text-container">
+      <textarea id="detected-language" readonly></textarea>
+      <textarea id="extracted-text" placeholder="Extracted text will appear here..."></textarea>
+    </div>
+  </div>
+  <button id="save-correction">Save Correction</button>
+  <script src="main.js"></script>
 </body>
-
 </html>
