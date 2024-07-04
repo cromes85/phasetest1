@@ -20,10 +20,12 @@
             margin: 20px 0;
         }
 
-        #extracted-text {
+        #extracted-text,
+        #detected-language {
             width: 100%;
             max-width: 600px;
             height: 150px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -32,6 +34,7 @@
     <h1>Pokémon Card OCR</h1>
     <input type="file" id="file-input" accept="image/*" capture="environment">
     <img id="image" src="" alt="Selected Image">
+    <textarea id="detected-language" placeholder="Detected language will appear here..." readonly></textarea>
     <textarea id="extracted-text" placeholder="Extracted text will appear here..."></textarea>
     <button id="save-correction">Save Correction</button>
     <script src="index.js"></script>
