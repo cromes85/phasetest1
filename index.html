@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Card OCR</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.3/dist/tesseract.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #image {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+
+        #extracted-text {
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Pokémon Card OCR</h1>
+    <input type="file" id="file-input" accept="image/*" capture="environment">
+    <img id="image" src="" alt="Selected Image">
+    <textarea id="extracted-text" placeholder="Extracted text will appear here..."></textarea>
+    <button id="save-correction">Save Correction</button>
+    <script src="main.js"></script>
+</body>
+
+</html>
