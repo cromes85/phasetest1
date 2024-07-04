@@ -29,7 +29,7 @@ async function preprocessImage(file) {
   const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
 
-  // Convert to grayscale and enhance contrast
+  // Convert to grayscale
   for (let i = 0; i < data.length; i += 4) {
     const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
     data[i] = avg; // red
@@ -37,18 +37,21 @@ async function preprocessImage(file) {
     data[i + 2] = avg; // blue
   }
 
-  // Apply a simple threshold to binarize the image
+  // Increase contrast
+  const contrast = 50; // You can adjust the contrast value
+  const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
   for (let i = 0; i < data.length; i += 4) {
-    const brightness = data[i];
-    const threshold = 128; // you can adjust this value as needed
-    const binarizedValue = brightness > threshold ? 255 : 0;
-    data[i] = binarizedValue;
-    data[i + 1] = binarizedValue;
-    data[i + 2] = binarizedValue;
+    data[i] = truncate(factor * (data[i] - 128) + 128);
+    data[i + 1] = truncate(factor * (data[i + 1] - 128) + 128);
+    data[i + 2] = truncate(factor * (data[i + 2] - 128) + 128);
   }
 
   context.putImageData(imageData, 0, 0);
   return canvas.toDataURL("image/png");
+}
+
+function truncate(value) {
+  return Math.min(255, Math.max(0, value));
 }
 
 async function performOcr(image) {
