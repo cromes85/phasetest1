@@ -1,38 +1,34 @@
-document
-  .getElementById("file-input")
-  .addEventListener("change", async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      document.getElementById("image").src = imageUrl;
+document.getElementById("file-input").addEventListener("change", async (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const imageUrl = URL.createObjectURL(file);
+    document.getElementById("image").src = imageUrl;
 
-      const processedImage = await preprocessImage(file);
-      const { text: extractedText, lang: detectedLang } = await performOcr(
-        processedImage
-      );
-      const correctedText = autoCorrectText(extractedText);
-      document.getElementById("extracted-text").value = correctedText;
-      document.getElementById("detected-language").value = detectedLang;
-      resizeLanguageBox(detectedLang);
+    const processedImage = await preprocessImage(file);
+    const { text: extractedText, lang: detectedLang } = await performOcr(processedImage);
+    const correctedText = autoCorrectText(extractedText);
+    document.getElementById("extracted-text").value = correctedText;
+    document.getElementById("detected-language").value = detectedLang;
+    resizeLanguageBox(detectedLang);
 
-      if (!containsCode(correctedText)) {
-        showCorrectionDialog(file, correctedText);
-      } else {
-        saveExtractedText(file.name, correctedText);
-      }
+    if (!containsCode(correctedText)) {
+      showCorrectionDialog(file, correctedText);
+    } else {
+      saveExtractedText(file.name, correctedText);
     }
-  });
+  }
+});
 
 async function preprocessImage(file) {
   const image = await createImageBitmap(file);
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
   canvas.width = image.width;
   canvas.height = image.height;
   context.drawImage(image, 0, 0);
   const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
-
+  
   // Convert to grayscale
   for (let i = 0; i < data.length; i += 4) {
     const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
@@ -40,7 +36,7 @@ async function preprocessImage(file) {
     data[i + 1] = avg; // green
     data[i + 2] = avg; // blue
   }
-
+  
   // Increase contrast
   const contrast = 50; // You can adjust the contrast value
   const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
@@ -49,9 +45,9 @@ async function preprocessImage(file) {
     data[i + 1] = truncate(factor * (data[i + 1] - 128) + 128);
     data[i + 2] = truncate(factor * (data[i + 2] - 128) + 128);
   }
-
+  
   context.putImageData(imageData, 0, 0);
-  return canvas.toDataURL("image/png");
+  return canvas.toDataURL('image/png');
 }
 
 function truncate(value) {
@@ -60,12 +56,11 @@ function truncate(value) {
 
 async function performOcr(image) {
   const result = await Tesseract.recognize(image, "eng", {
-    tessedit_char_whitelist:
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.:;'\"()!? /",
-    tessedit_pageseg_mode: Tesseract.PSM.SINGLE_BLOCK,
+    tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.:;'\"()!? /",
+    tessedit_pageseg_mode: Tesseract.PSM.SINGLE_BLOCK
   });
   const detectedLang = detectLanguage(result.data.text);
-  const cleanedText = result.data.text.replace(/\n/g, " ").trim();
+  const cleanedText = result.data.text.replace(/\n/g, ' ').trim();
   return { text: cleanedText, lang: detectedLang };
 }
 
@@ -77,11 +72,11 @@ function detectLanguage(text) {
   let frenchCount = 0;
   let englishCount = 0;
 
-  frenchWords.forEach((word) => {
+  frenchWords.forEach(word => {
     if (text.includes(word)) frenchCount++;
   });
 
-  englishWords.forEach((word) => {
+  englishWords.forEach(word => {
     if (text.includes(word)) englishCount++;
   });
 
@@ -99,10 +94,7 @@ function containsCode(text) {
 }
 
 function showCorrectionDialog(file, extractedText) {
-  const correctedText = prompt(
-    "The extracted text doesn't contain a valid code. Please correct it:",
-    extractedText
-  );
+  const correctedText = prompt("The extracted text doesn\'t contain a valid code. Please correct it:", extractedText);
   if (correctedText !== null) {
     saveCorrection(file.name, correctedText);
     document.getElementById("extracted-text").value = correctedText;
@@ -124,14 +116,16 @@ function autoCorrectText(text) {
     "R ": "",
     "®": "",
     "oy =": "",
-    llus: "Illus.",
-    Ninenda: "Nintendo",
-    SRBI1O: "18/110",
+    "llus": "Illus.",
+    "Ninenda": "Nintendo",
+    "SRBI1O": "18/110",
+    "8/1 22": "81/122", // Ajout d'un exemple de correction spécifique
+    "52/ 100": "52/100"
     // Add more corrections as needed
   };
 
   for (const [wrong, right] of Object.entries(corrections)) {
-    const regex = new RegExp(wrong, "g");
+    const regex = new RegExp(wrong, 'g');
     correctedText = correctedText.replace(regex, right);
   }
 
