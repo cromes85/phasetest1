@@ -1,62 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokémon Card OCR</title>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.3/dist/tesseract.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-    #container {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 20px;
-    }
-    #image {
-      max-width: 50%;
-      margin: 20px 0;
-    }
-    #text-container {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    #detected-language {
-      width: auto;
-      height: auto;
-      padding: 5px;
-      margin-bottom: 20px;
-      resize: none;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-    #extracted-text {
-      width: 100%;
-      max-width: 600px;
-      height: 150px;
-      margin-bottom: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Card OCR</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.3/dist/tesseract.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        #found-images {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cross {
+            width: 20px;
+            height: 20px;
+            border: 2px solid blue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .cross::after,
+        .cross::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background-color: blue;
+        }
+
+        .cross::before {
+            transform: rotate(45deg);
+        }
+
+        .cross::after {
+            transform: rotate(-45deg);
+        }
+
+        #image {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+
+        #text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #detected-language {
+            width: auto;
+            height: auto;
+            padding: 5px;
+            margin-bottom: 20px;
+            resize: none;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        #extracted-text {
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
+
 <body>
-  <h1>Pokémon Card OCR</h1>
-  <input type="file" id="file-input" accept="image/*" capture="environment">
-  <div id="container">
-    <img id="image" src="" alt="Selected Image">
-    <div id="text-container">
-      <textarea id="detected-language" readonly></textarea>
-      <textarea id="extracted-text" placeholder="Extracted text will appear here..."></textarea>
+    <h1>Pokémon Card OCR</h1>
+    <input type="file" id="file-input" accept="image/*" capture="environment">
+    <div id="container">
+        <div id="found-images">
+            <!-- Placeholders for found images and crosses -->
+            <div class="cross"></div>
+            <div class="cross"></div>
+            <div class="cross"></div>
+            <div class="cross"></div>
+        </div>
+        <img id="image" src="" alt="Selected Image">
+        <div id="text-container">
+            <textarea id="detected-language" readonly></textarea>
+            <textarea id="extracted-text" placeholder="Extracted text will appear here..."></textarea>
+        </div>
     </div>
-  </div>
-  <button id="save-correction">Save Correction</button>
-  <script src="main.js"></script>
+    <button id="save-correction">Save Correction</button>
+    <script src="main.js"></script>
 </body>
+
 </html>
