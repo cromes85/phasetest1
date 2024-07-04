@@ -29,35 +29,15 @@
             gap: 10px;
         }
 
-        .cross {
-            width: 20px;
-            height: 20px;
+        .found-image {
+            max-width: 50px;
+            max-height: 50px;
             border: 2px solid blue;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .cross::after,
-        .cross::before {
-            content: "";
-            position: absolute;
-            width: 2px;
-            height: 100%;
-            background-color: blue;
-        }
-
-        .cross::before {
-            transform: rotate(45deg);
-        }
-
-        .cross::after {
-            transform: rotate(-45deg);
+            padding: 2px;
         }
 
         #image {
-            max-width: 100%;
+            max-width: 50%;
             margin: 20px 0;
         }
 
@@ -91,11 +71,7 @@
     <input type="file" id="file-input" accept="image/*" capture="environment">
     <div id="container">
         <div id="found-images">
-            <!-- Placeholders for found images and crosses -->
-            <div class="cross"></div>
-            <div class="cross"></div>
-            <div class="cross"></div>
-            <div class="cross"></div>
+            <!-- Placeholders for found images -->
         </div>
         <img id="image" src="" alt="Selected Image">
         <div id="text-container">

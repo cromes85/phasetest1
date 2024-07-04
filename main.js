@@ -30,18 +30,13 @@ document.getElementById("file-input").addEventListener("change", async (event) =
 
 function displayFoundImages(images) {
   const container = document.getElementById("found-images");
-  container.innerHTML = ""; // Clear previous images and crosses
+  container.innerHTML = ""; // Clear previous images
   images.forEach((src, index) => {
     const img = document.createElement("img");
     img.src = src;
     img.alt = `Found image ${index + 1}`;
-    img.style.maxWidth = "50px";
-    img.style.maxHeight = "50px";
+    img.className = "found-image";
     container.appendChild(img);
-
-    const cross = document.createElement("div");
-    cross.className = "cross";
-    container.appendChild(cross);
   });
 }
 
