@@ -1,4 +1,14 @@
-(function() {
+(async function() {
+    let cardData = [];
+
+    // Load the card data from the local JSON file
+    async function loadCardData() {
+        const response = await fetch('pokemon_all.json');
+        cardData = await response.json();
+    }
+
+    await loadCardData();
+
     document.getElementById("file-input").addEventListener("change", async (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -16,7 +26,7 @@
                 showCorrectionDialog(file, correctedText);
             } else {
                 saveExtractedText(file.name, correctedText);
-                const matchFound = await validateCardCode(correctedText);
+                const matchFound = validateCardCode(correctedText);
                 document.getElementById("match-status").innerText = matchFound ? "✓" : "";
             }
         }
@@ -129,15 +139,13 @@
         return corrections;
     }
 
-    async function validateCardCode(text) {
+    function validateCardCode(text) {
         const regex = /\b\d{1,3}\/\d{1,3}\b/;
         const matches = text.match(regex);
         if (matches) {
             const code = matches[0];
             const [number, total] = code.split('/');
-            const response = await fetch(`https://tcgdex.dev/fr/rest/set-card`);
-            const data = await response.json();
-            const validCodes = data.map(card => card.number + '/' + card.total);
+            const validCodes = cardData.map(card => card.number + '/' + card.total);
             return validCodes.includes(code);
         }
         return false;
