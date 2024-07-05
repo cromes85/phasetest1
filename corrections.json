@@ -10,7 +10,9 @@
     "4 4 / 1 2 2": "44/122",
     "5 2 / 1 0 0": "52/100",
     "Anmn": "Anneau",
-    "Pnixon":"Poisson"
+    "Pnixon":"Poisson",
+    "AnneaudePoisson": "Anneau de Poisson",
+    "¢":""
 
   }
   
